@@ -1,8 +1,8 @@
-const express = require('express');
-const serverless = require('serverless-http');
-const app = express();
-const router = express.Router();
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
 
+const app = express();
 
 app.use(cors());
 app.use(
@@ -23,17 +23,17 @@ const notes = [{
                 }];
 let nextId = 1;
 
-router.get("/notes", (req, res) => {
+app.get("/notes", (req, res) => {
   res.send(JSON.stringify(notes));
 });
 
-router.post("/notes", (req, res) => {
+app.post("/notes", (req, res) => {
   notes.push({ id: nextId++,  ...req.body});
   res.status(204);
   res.end();
 });
 
-router.delete("/notes/:id", (req, res) => {
+app.delete("/notes/:id", (req, res) => {
   console.log(req.params.id);
   const noteId = Number(req.params.id);
   const index = notes.findIndex((o) => o.id === noteId);
@@ -44,5 +44,5 @@ router.delete("/notes/:id", (req, res) => {
   res.end();
 });
 
-app.use('/.netlify/functions/api', router);
-module.exports.handler = serverless(app);
+const port = process.env.PORT || 7070;
+app.listen(port, () => console.log(`The server is running on http://localhost:${port}`));
