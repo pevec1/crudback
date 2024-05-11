@@ -19,7 +19,6 @@
    "main": "server.js",
    "name": "backend",
    "scripts": {
-      // "start": "node server.js",
       "build": "netlify deploy --prod"
    },
    "type": "module",
